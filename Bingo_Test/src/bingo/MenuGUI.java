@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.sql.SQLException;
 
 public class MenuGUI {
 
@@ -171,7 +172,7 @@ public class MenuGUI {
                     resultado.setText("Cliente no encontrado");
                 }
 
-            } catch (Exception ex) {
+            } catch (SQLException ex) {
                 resultado.setText("Error: " + ex.getMessage());
             }
         });
@@ -214,7 +215,7 @@ public class MenuGUI {
                 stmt.setString(1, dni);
                 stmt.execute();
                 JOptionPane.showMessageDialog(gestionFrame, "Cliente eliminado correctamente.");
-            } catch (Exception ex) {
+            } catch (HeadlessException | SQLException ex) {
                 JOptionPane.showMessageDialog(gestionFrame, "Error al eliminar: " + ex.getMessage());
             }
         });
@@ -284,7 +285,7 @@ public class MenuGUI {
                 } else {
                     JOptionPane.showMessageDialog(gestionFrame, "Cliente no encontrado.");
                 }
-            } catch (Exception ex) {
+            } catch (HeadlessException | SQLException ex) {
                 JOptionPane.showMessageDialog(gestionFrame, "Error al cargar datos: " + ex.getMessage());
             }
         });
@@ -316,7 +317,7 @@ public class MenuGUI {
                 stmt.setString(6, dniOriginal);
                 stmt.execute();
                 JOptionPane.showMessageDialog(gestionFrame, "Cliente actualizado correctamente.");
-            } catch (Exception ex) {
+            } catch (HeadlessException | SQLException ex) {
                 JOptionPane.showMessageDialog(gestionFrame, "Error al actualizar: " + ex.getMessage());
             }
         });
@@ -374,7 +375,7 @@ public class MenuGUI {
                             rs.getString(4), rs.getString(5), rs.getString(6)));
                 }
                 areaTodos.setText(sb.toString());
-            } catch (Exception ex) {
+            } catch (SQLException ex) {
                 areaTodos.setText("Error al cargar clientes: " + ex.getMessage());
             }
         });
@@ -387,5 +388,4 @@ public class MenuGUI {
 
         return panelVerTodos;
     }
-
 }
