@@ -2,8 +2,6 @@ package bingo;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 import java.sql.SQLException;
 
 /**
@@ -26,11 +24,11 @@ public class Bingo {
     public static void mostrarMenuPrincipal() {
         JFrame frame = new JFrame("Menú Principal - Bingo");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500, 400);
+        frame.setSize(600, 500);
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
 
-        // Establecer icono temporal
+        // Establecer icono
         ImageIcon icono = new ImageIcon(Bingo.class.getResource("/bingo/bingo_icon.png"));
         frame.setIconImage(icono.getImage());
 
@@ -46,22 +44,38 @@ public class Bingo {
         };
         panelFondo.setLayout(new BorderLayout());
 
-        JPanel panelBotones = new JPanel(new GridLayout(5, 1, 10, 10));
-        panelBotones.setOpaque(false);
-        panelBotones.setBorder(BorderFactory.createEmptyBorder(30, 50, 30, 50));
+        // Título con imagen PNG
+        ImageIcon tituloIcon = new ImageIcon(Bingo.class.getResource("/bingo/titulo.png"));
+        JLabel lblTitulo = new JLabel(tituloIcon);
+        lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
+        panelFondo.add(lblTitulo, BorderLayout.NORTH);
+        panelFondo.setBorder(BorderFactory.createEmptyBorder(35, 0, 0, 0)); // márgenes
 
-        JLabel titulo = new JLabel("\uD83C\uDFB2 Bienvenido al BINGO", SwingConstants.CENTER);
-        titulo.setFont(new Font("Ubuntu Mono", Font.PLAIN, 35));
-        titulo.setForeground(Color.BLACK);
+        // Panel de botones centrado y con control de tamaño
+        JPanel panelBotones = new JPanel();
+        panelBotones.setLayout(new BoxLayout(panelBotones, BoxLayout.Y_AXIS));
+        panelBotones.setOpaque(false);
+        panelBotones.setBorder(BorderFactory.createEmptyBorder(10, 150, 20, 150)); // márgenes
+
+        // Configuración común para botones
+        Dimension tamañoBoton = new Dimension(220, 40);
+        Font fuenteBoton = new Font("Ubuntu Mono", Font.BOLD, 18);
 
         JButton btnJugar = new JButton("🎮 Jugar Bingo");
-        btnJugar.setPreferredSize(new Dimension(150,50));
-        btnJugar.setMaximumSize(new Dimension(150,50));
-        btnJugar.setFont(new Font("Ubuntu Mono",Font.BOLD,24));
         JButton btnGestionClientes = new JButton("👤 Gestionar Clientes");
         JButton btnCreditos = new JButton("🎬 Créditos");
         JButton btnSalir = new JButton("❌ Salir");
 
+        for (JButton btn : new JButton[]{btnJugar, btnGestionClientes, btnCreditos, btnSalir}) {
+            btn.setAlignmentX(Component.CENTER_ALIGNMENT);
+            btn.setMaximumSize(tamañoBoton);
+            btn.setPreferredSize(tamañoBoton);
+            btn.setFont(fuenteBoton);
+            panelBotones.add(btn);
+            panelBotones.add(Box.createVerticalStrut(15)); // Espacio entre botones
+        }
+
+        // Acciones de los botones
         btnJugar.addActionListener(e -> {
             try {
                 String usuario = Database.SQLBuscarClienteGUI();
@@ -77,12 +91,6 @@ public class Bingo {
         btnGestionClientes.addActionListener(e -> MenuGUI.mostrarVentanaGestionClientes());
         btnCreditos.addActionListener(e -> CreditosDialog.mostrar(frame));
         btnSalir.addActionListener(e -> System.exit(0));
-
-        panelBotones.add(titulo);
-        panelBotones.add(btnJugar);
-        panelBotones.add(btnGestionClientes);
-        panelBotones.add(btnCreditos);
-        panelBotones.add(btnSalir);
 
         panelFondo.add(panelBotones, BorderLayout.CENTER);
         frame.setContentPane(panelFondo);

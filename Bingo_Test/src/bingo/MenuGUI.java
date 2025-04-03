@@ -53,15 +53,22 @@ public class MenuGUI {
 
     //Metodo para agregar un cliente nuevo
     private static JPanel crearPanelAgregar(JFrame gestionFrame) {
-        // Panel de Agregar Cliente
         JPanel panelAgregar = new JPanel(new GridLayout(7, 2, 10, 10));
-        panelAgregar.setBorder(BorderFactory.createEmptyBorder(20, 30, 20, 30));
+        panelAgregar.setBorder(BorderFactory.createEmptyBorder(20, 60, 20, 60)); // Margen para centrar mejor
 
         JTextField txtDNI = new JTextField();
         JTextField txtNombre = new JTextField();
         JTextField txtApellido1 = new JTextField();
         JTextField txtApellido2 = new JTextField();
         JTextField txtFecha = new JTextField();
+
+        // Ajustar tamaño de campos
+        Dimension campoPequeno = new Dimension(120, 25);
+        txtDNI.setPreferredSize(campoPequeno);
+        txtNombre.setPreferredSize(campoPequeno);
+        txtApellido1.setPreferredSize(campoPequeno);
+        txtApellido2.setPreferredSize(campoPequeno);
+        txtFecha.setPreferredSize(campoPequeno);
 
         // Poner placeholders
         MenuGUI.ponerPlaceholder(txtDNI, "Ej: 12345678A");
@@ -77,7 +84,7 @@ public class MenuGUI {
         panelAgregar.add(txtApellido2);
         panelAgregar.add(new JLabel("Fecha Nacimiento (dd/mm/yyyy):"));
         panelAgregar.add(txtFecha);
-        panelAgregar.add(new JLabel());
+        panelAgregar.add(new JLabel()); // Espacio vacío
 
         JButton btnGuardar = new JButton("Guardar Cliente");
         btnGuardar.addActionListener(e -> {
@@ -129,9 +136,15 @@ public class MenuGUI {
         JPanel panelSuperior = new JPanel(new FlowLayout());
         JTextField txtBuscarDNI = new JTextField(10);
         JButton btnBuscar = new JButton("Buscar");
-        JTextArea resultado = new JTextArea(8, 50);
+
+        JTextArea resultado = new JTextArea(6, 30); // Tamaño más pequeño
         resultado.setEditable(false);
         resultado.setFont(new Font("Monospaced", Font.PLAIN, 14));
+        resultado.setLineWrap(true); // Para que el texto se ajuste a la línea
+        resultado.setWrapStyleWord(true);
+
+        // También puedes usar esto para mayor control del tamaño:
+        resultado.setPreferredSize(new Dimension(300, 120)); // Tamaño visual
 
         btnBuscar.addActionListener(e -> {
             String dni = txtBuscarDNI.getText().trim().toUpperCase();
@@ -169,7 +182,13 @@ public class MenuGUI {
         panelSuperior.add(txtBuscarDNI);
         panelSuperior.add(btnBuscar);
         panelBuscar.add(panelSuperior, BorderLayout.NORTH);
-        panelBuscar.add(new JScrollPane(resultado), BorderLayout.CENTER);
+        JScrollPane scroll = new JScrollPane(resultado);
+        scroll.setPreferredSize(new Dimension(500, 300)); // Tamaño fijo
+
+        JPanel panelCentro = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        panelCentro.add(scroll);
+
+        panelBuscar.add(panelCentro, BorderLayout.CENTER);
         return panelBuscar;
     }
 
@@ -224,6 +243,15 @@ public class MenuGUI {
 
         JButton btnActualizarCliente = new JButton("Actualizar Cliente");
         btnActualizarCliente.setEnabled(false);
+
+        // Ajustar tamaño de campos
+        Dimension campoPequeno = new Dimension(120, 25);
+        txtModificarDNI.setPreferredSize(campoPequeno);
+        mDNI.setPreferredSize(campoPequeno);
+        mNombre.setPreferredSize(campoPequeno);
+        mAp1.setPreferredSize(campoPequeno);
+        mAp2.setPreferredSize(campoPequeno);
+        mFecha.setPreferredSize(campoPequeno);
 
         btnCargarDatos.addActionListener(e -> {
             String dni = txtModificarDNI.getText().trim().toUpperCase();
@@ -300,6 +328,8 @@ public class MenuGUI {
         buscarModificarPanel.add(new JLabel("DNI actual: "));
         buscarModificarPanel.add(txtModificarDNI);
         buscarModificarPanel.add(btnCargarDatos);
+
+        formularioModificar.setBorder(BorderFactory.createEmptyBorder(10, 60, 10, 60)); // Centrar
 
         formularioModificar.add(new JLabel("Nuevo DNI:"));
         formularioModificar.add(mDNI);
